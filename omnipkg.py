@@ -45,6 +45,8 @@ class OmniPkg(dotbot.Plugin):
             self._setupLinux()
         elif sys.platform == "darwin":
             self._setupMacOS()
+        elif sys.platform == 'win32':
+            self._setupWindows()
 
     def can_handle(self, directive):
         # only allow the directives listed above
@@ -98,6 +100,15 @@ class OmniPkg(dotbot.Plugin):
     def _setupMacOS(self):
         self._platformName = "mac"
         self._setupBrew()
+
+    def _setupWindows(self):
+        self._platformName = 'win'
+
+        self._packageManagerName = "scoop"
+        self._dictLookup = self._packageManagerName
+        self._installCommand = "scoop install"
+        self._existsCheck = "scoop search /^$PKG_NAME$/"
+        self._upgradeCommand = "scoop update --all"
 
     def _setupLinux(self):
         self._platformName = "linux"
